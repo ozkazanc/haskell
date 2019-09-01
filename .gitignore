@@ -1,0 +1,5 @@
+./*.exercism
+./*.stack-work
+./*.cabal
+./bob/*.yaml
+
