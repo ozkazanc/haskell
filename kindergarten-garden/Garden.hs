@@ -15,11 +15,17 @@ type Garden = [(Name,String)]
 garden :: [Name] -> String -> Garden
 garden students plants = let rows = words plants 
                              ans = map (chunksOf 2) rows
-                         in concat $ map (zip students) ans 
+                         in concat $ map (zip students) ans
+                         --in ans >>= (zip students)
+                         --in ans >>= (\x -> zip students x)
+                         --in do
+                         --x <- ans
+                         --zip students x
+                         --in [(s,p) | x <- ans, (s,p) <- zip students x ]
 
 lookupPlants :: String -> Garden -> [Plant]
 lookupPlants student garden = let plants = filter (\x -> fst x == student) garden
-                              in  concat $ map func plants
+                              in  concat $ map func plants -- plants >>= func
 
 func :: (Name, String) -> [Plant]
 func (name,plants) = map transcribe plants
