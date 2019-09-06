@@ -1,10 +1,30 @@
 module Cipher (caesarDecode, caesarEncode, caesarEncodeRandom) where
 
+import Data.Char (ord, chr)
+import System.Random
+
 caesarDecode :: String -> String -> String
-caesarDecode key encodedText = error "You need to implement this function."
+caesarDecode [] _ = []
+caesarDecode _ [] = []
+caesarDecode [key] (y:ys) = shiftBy (ord 'a' - ord key) y: caesarDecode [key] ys
+caesarDecode (x:xs) (y:ys) = shiftBy (ord 'a' - ord x) y : caesarDecode xs ys
 
 caesarEncode :: String -> String -> String
-caesarEncode key text = error "You need to implement this function."
+caesarEncode [] _ = []
+caesarEncode _ [] = []
+caesarEncode [key] (y:ys) = shiftBy (ord key - ord 'a') y: caesarEncode [key] ys
+caesarEncode (x:xs) (y:ys) = shiftBy (ord x - ord 'a') y : caesarEncode xs ys
 
 caesarEncodeRandom :: String -> IO (String, String)
-caesarEncodeRandom text = error "You need to implement this function."
+caesarEncodeRandom text = do
+                    --gen <- newStdGen
+                    --(key,newGen) <- return $ randomR('a','z') gen 
+                    key <- getStdRandom(randomR('a','z'))
+                    return ([key], caesarEncode [key] text)
+
+shiftBy :: Int -> Char -> Char
+shiftBy shift c = inBounds $ shift + ord c
+     where inBounds x 
+              | x < ord 'a' = chr $ x + 26
+              | x > ord 'z' = chr $ x - 26
+              | otherwise = chr x
