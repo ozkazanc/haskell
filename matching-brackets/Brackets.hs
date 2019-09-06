@@ -7,7 +7,7 @@ arePaired xs = null $ foldl foldingFunction [] $ onlyBrackets xs
 --if stack empty then no error, ie brackets are paired correctly
 onlyBrackets :: String -> String
 onlyBrackets str = foldr (\x acc -> if x `elem` "()[]{}" then x:acc else acc) [] str
-
+                   -- filter (`elem` "()[]{}") str
 foldingFunction :: String -> Char -> String
 --pop it from stack if there is an opening bracket
 foldingFunction acc@(x:xs) ')' = if x == '(' then xs else ')':acc

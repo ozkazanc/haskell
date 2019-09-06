@@ -2,4 +2,6 @@
 ./*.stack-work
 ./*.cabal
 ./bob/*.yaml
+PDF/*
+Code/*
 
