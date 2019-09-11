@@ -1,10 +1,11 @@
 module Queens (boardString, canAttack) where
+import Data.List (intersperse)
 
 boardString :: Maybe(Int, Int) -> Maybe(Int, Int) -> String
 boardString wQueen bQueen =
     let whiteBoard = placeQueen 'W' wQueen
         blackBoard = placeQueen 'B' bQueen
-    in  unlines . chunksOf 8 $ zipWith zipFunc whiteBoard blackBoard
+    in  unlines . fmap (intersperse ' ') . chunksOf 8 . zipWith zipFunc whiteBoard $ blackBoard
 
 
 canAttack :: (Int, Int) -> (Int, Int) -> Bool
@@ -15,14 +16,14 @@ canAttack (x1,y1) (x2,y2)
             | otherwise = False
 
 zipFunc :: Char -> Char -> Char
-zipFunc ' ' b = b
-zipFunc w ' ' = w
+zipFunc '_' b = b
+zipFunc w '_' = w
 zipFunc _ _ = error "Both queens on the same square"
 
 placeQueen :: Char -> Maybe(Int,Int) -> String
-placeQueen _ Nothing = placeQueen ' ' (Just(0,0))
+placeQueen _ Nothing = placeQueen '_' (Just(0,0))
 placeQueen c (Just(x,y)) = let index = x * 8 + y
-                     in replicate index ' ' ++ [c] ++ replicate (63 - index) ' '
+                     in replicate index '_' ++ [c] ++ replicate (63 - index) '_'
 
 
 chunksOf :: Int -> [Char] -> [[Char]]
